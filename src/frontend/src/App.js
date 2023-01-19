@@ -1,8 +1,14 @@
 import React from 'react';
 import { Button, Radio } from 'antd';
+
+import { getAllStudents } from './client';
+
 import './App.css';
 
 function App() {
+  getAllStudents()
+    .then(response => response.json())
+    .then(console.log);
   return (
     <div className="App">
       <Button type="primary">Hello</Button>
