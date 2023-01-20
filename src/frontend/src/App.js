@@ -1,24 +1,37 @@
-import React from 'react';
-import { Button, Radio } from 'antd';
-
+import { useEffect, useState } from 'react';
 import { getAllStudents } from './client';
 
 import './App.css';
 
 function App() {
-  getAllStudents()
+  const [students, setStudents] = useState([]);
+
+  const fetchStudents = () => {
+    getAllStudents()
     .then(response => response.json())
-    .then(console.log);
+    .then(data => setStudents(data));
+  }
+  useEffect(() => {
+    console.log("App mounted");
+    fetchStudents();
+  }, []);
+
+  if (students.length === 0) {
+    return <div>Loading...</div>
+  }
+
   return (
     <div className="App">
-      <Button type="primary">Hello</Button>
-      <Radio.Group value="large">
-        <Radio.Button value="large">Large</Radio.Button>
-        <Radio.Button value="default">Default</Radio.Button>
-        <Radio.Button value="small">Small</Radio.Button>
-      </Radio.Group>
+      <header className="App-header">
+        <h1>Students</h1>
+        <ul>
+          {students.map(student => (
+            <li key={student.id}>{student.name} - {student.email}</li>
+          ))}
+        </ul>
+      </header>
     </div>
-  );
+  )
 }
 
 export default App;
